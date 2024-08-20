@@ -1,0 +1,143 @@
+<div class="container">
+  <!--Top Heading-->
+  <div class="d-flex">
+    <div class="p-2 flex-grow-1">
+      <h3>BonobozNews - Top Heading</h3>
+    </div>
+    <div class="p-2">
+      <button type="button" class="btn btn-dark" (click)="openModal()">
+        Filter
+      </button>
+    </div>
+    <!--modal design-->
+    <!-- Modal Structure -->
+    <div class="modal" tabindex="-1" *ngIf="isModalOpen">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Fill in the Form</h5>
+            <button
+              type="button"
+              class="btn-close"
+              aria-label="Close"
+              (click)="closeModal()"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+              <div class="mb-3">
+                <label for="countryName" class="form-label"
+                  >Country Name:</label
+                >
+                <select
+                  id="countryName"
+                  formControlName="countryName"
+                  class="form-control"
+                >
+                  <option value="in">IN</option>
+                  <option value="us">US</option>
+                  <option value="ua">UA</option>
+                  <option value="sa">SA</option>
+                </select>
+              </div>
+              <!-- <div class="mb-3">
+                <label for="date" class="form-label">From Date:</label>
+                <input
+                  type="date"
+                  id="fromdate"
+                  formControlName="fromdate"
+                  class="form-control"
+                />
+              </div> -->
+              <div class="mb-3">
+                <label for="date" class="form-label">To Date:</label>
+                <input
+                  type="date"
+                  id="todate"
+                  formControlName="todate"
+                  class="form-control"
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--search button-->
+    <div class="p-2">
+      <form class="d-flex" role="search" (submit)="onSearch()">
+        <input
+          class="form-control me-2"
+          type="search"
+          placeholder="Search by title"
+          aria-label="Search"
+          [(ngModel)]="searchTerm"
+          [ngModelOptions]="{ standalone: true }"
+          (keyup)="onChanges($event)"
+        />
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+  <!--New container-->
+  <div class="my-5" *ngIf="isShowSpinner">
+    <app-spinner></app-spinner>
+  </div>
+  <div class="container" *ngIf="!isShowSpinner">
+    <div class="row">
+      <div
+        class="card my-4 mx-3"
+        style="width: 18rem"
+        *ngFor="let newObj of filteredList"
+      >
+        <img
+          src="{{
+            newObj.urlToImage
+              ? newObj.urlToImage
+              : 'https://st4.depositphotos.com/14953852/22772/v/450/depositphotos_227725020-stock-illustration-image-available-icon-flat-vector.jpg'
+          }}"
+          class="card-img-top"
+          alt="..."
+        />
+        <div class="card-body">
+          <h5 class="card-title">
+            {{
+              newObj.title ? newObj.title.slice(0, 20) : "Title not coming"
+            }}...
+          </h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{ newObj.author }}</h6>
+          <p class="card-text">
+            {{
+              newObj.description
+                ? newObj.description.slice(0, 40)
+                : "description not coming"
+            }}
+          </p>
+          <a href="{{ newObj.url }}" target="_blank" class="btn btn-dark"
+            >Readmore..</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <div class="p-2">
+      <button
+        [disabled]="page < 1"
+        type="button"
+        class="btn btn-dark"
+        (click)="onPrev()"
+      >
+        Prev
+      </button>
+    </div>
+    <div class="p-2">
+      <button type="button" class="btn btn-dark" (click)="onNext()">
+        Next
+      </button>
+    </div>
+  </div>
+</div>
