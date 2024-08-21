@@ -126,7 +126,7 @@
   <div class="pagination">
     <div class="p-2">
       <button
-        [disabled]="page < 1"
+        [disabled]="page == 1"
         type="button"
         class="btn btn-dark"
         (click)="onPrev()"
